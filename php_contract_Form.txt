@@ -1,0 +1,28 @@
+<?php
+
+if (empty($_POST) === false) {
+  $errors = array();
+
+  $name = $_POST['name'];
+  $email = $_POST['email'];
+  $comment = $_POST['comment'];
+
+  if(empty($name) === true || empty($email) === true || empty($comment) === true) {
+    $errors[] = "Name, email and message are required!";
+  } else {
+    if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+      $errors[] = "It's not a valid email address.";
+    }
+    if (ctype_alpha($name) === false) {
+      $errors[] = "Name must only contains letters!";
+    }
+    if (empty($errors) === true) {
+      mail('sagararnob1@gmail.com', 'Contact Form', $comment, 'From ' . $email);
+      header('Location: contact.php?sent');
+      exit();
+    }
+
+  }
+}
+
+?>
